@@ -155,6 +155,13 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       # ========================================
+      # 3. INSTALL GKE AUTH PLUGIN
+      # ========================================
+      - name: Install GKE Auth Plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+
+      # ========================================
       # 4. GET GKE CREDENTIALS
       # ========================================
       - name: Get GKE Credentials
@@ -164,18 +171,11 @@ jobs:
             --project curamet-onboarding
       
       # ========================================
-      # 4.5 INSTALL GKE AUTH PLUGIN
-      # ========================================
-      - name: Install GKE Auth Plugin
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
-
-      # ========================================
-      # 5. DEPLOY TO KUBERNETES
+      # 4.5 DEPLOY TO KUBERNETES
       # ========================================
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s-deployment.yaml --validate=false
+          kubectl apply -f k8s-deployment.yaml
           kubectl rollout status deployment/spring-test-app --timeout=5m
 
       # ========================================
