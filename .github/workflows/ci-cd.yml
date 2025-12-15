@@ -155,14 +155,10 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       # ========================================
-      # 3. INSTALL GKE AUTH PLUGIN
+      # 3. INSTALL KUBECTL
       # ========================================
-      - name: Install GKE Auth Plugin
-        run: |
-          go install github.com/kubernetes-sigs/cloud-provider-gcp/cmd/gke-gcloud-auth-plugin@latest
-          mkdir -p $HOME/bin
-          cp $HOME/go/bin/gke-gcloud-auth-plugin $HOME/bin/
-          echo "$HOME/bin" >> $GITHUB_PATH
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
 
       # ========================================
       # 4. GET GKE CREDENTIALS
@@ -171,17 +167,19 @@ jobs:
         run: |
           gcloud container clusters get-credentials autopilot-cluster-1 \
             --region europe-north1 \
-            --project curamet-onboarding
-      
+            --project curamet-onboarding \
+            --use-application-default-credentials
+
       # ========================================
       # 4.5 DEPLOY TO KUBERNETES
       # ========================================
       - name: Deploy to Kubernetes
         run: |
+          # Use application default credentials
+          export GOOGLE_APPLICATION_CREDENTIALS=$(mktemp)
+          echo "${{ secrets.GCP_SA_KEY }}" > $GOOGLE_APPLICATION_CREDENTIALS
           kubectl apply -f k8s-deployment.yaml --validate=false
-          kubectl rollout status deployment/spring-test-app --timeout=5m
-
-      # ========================================
+          kubectl rollout status deployment/spring-test-app --timeout=5m      # ========================================
       # 6. VERIFY DEPLOYMENT
       # ========================================
       - name: Verify Deployment
