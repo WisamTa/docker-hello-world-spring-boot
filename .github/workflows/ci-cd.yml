@@ -155,20 +155,13 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       # ========================================
-      # 3. INSTALL KUBECTL
-      # ========================================
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v3
-
-      # ========================================
       # 4. GET GKE CREDENTIALS
       # ========================================
       - name: Get GKE Credentials
         run: |
           gcloud container clusters get-credentials autopilot-cluster-1 \
             --region europe-north1 \
-            --project curamet-onboarding \
-            --use-application-default-credentials
+            --project curamet-onboarding
 
       # ========================================
       # 4.5 DEPLOY TO KUBERNETES
