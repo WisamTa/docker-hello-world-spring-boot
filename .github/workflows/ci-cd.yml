@@ -162,6 +162,13 @@ jobs:
           gcloud container clusters get-credentials autopilot-cluster-1 \
             --region europe-north1 \
             --project curamet-onboarding
+      
+      # ========================================
+      # 4.5 INSTALL GKE AUTH PLUGIN
+      # ========================================
+      - name: Install GKE Auth Plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
 
       # ========================================
       # 5. DEPLOY TO KUBERNETES
