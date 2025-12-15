@@ -159,34 +159,20 @@ jobs:
       # ========================================
       - name: Get GKE Credentials
         run: |
+          # Install the plugin
+          gcloud components install gke-gcloud-auth-plugin --quiet
+          
+          # Get credentials
           gcloud container clusters get-credentials autopilot-cluster-1 \
             --region europe-north1 \
             --project curamet-onboarding
-          
-          # Modify kubeconfig to remove exec plugin requirement
-          python3 << 'EOF'
-          import yaml
-          import os
-          
-          kubeconfig_path = os.path.expanduser('~/.kube/config')
-          with open(kubeconfig_path, 'r') as f:
-              config = yaml.safe_load(f)
-          
-          # Remove exec from users
-          for user in config.get('users', []):
-              if 'exec' in user.get('user', {}):
-                  del user['user']['exec']
-          
-          with open(kubeconfig_path, 'w') as f:
-              yaml.dump(config, f)
-          EOF
 
       # ========================================
       # 4.5 DEPLOY TO KUBERNETES
       # ========================================
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s-deployment.yaml --validate=false
+          kubectl apply -f k8s-deployment.yaml
           kubectl rollout status deployment/spring-test-app --timeout=5m      # ========================================
       # 6. VERIFY DEPLOYMENT
       # ========================================
