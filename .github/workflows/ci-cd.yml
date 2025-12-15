@@ -42,14 +42,12 @@ jobs:
       # 3. BUILD WITH MAVEN
       # ========================================
       - name: Build with Maven
-        working-directory: docker-hello-world-spring-boot
         run: mvn clean package -DskipTests
 
       # ========================================
       # 4. RUN TESTS
       # ========================================
       - name: Run Tests
-        working-directory: docker-hello-world-spring-boot
         run: mvn test
         continue-on-error: true
 
@@ -60,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: spring-boot-jar
-          path: docker-hello-world-spring-boot/target/*.jar
+          path: target/*.jar
           retention-days: 5
 
   code-quality:
@@ -79,7 +77,6 @@ jobs:
           cache: maven
 
       - name: SonarQube Scan (Optional)
-        working-directory: docker-hello-world-spring-boot
         run: |
           mvn verify \
             -Dsonar.projectKey=spring-boot-hello \
@@ -137,8 +134,8 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./docker-hello-world-spring-boot
-          file: ./docker-hello-world-spring-boot/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -179,10 +176,9 @@ jobs:
       # 4. DEPLOY TO KUBERNETES
       # ========================================
       - name: Deploy to Kubernetes
-        working-directory: docker-hello-world-spring-boot
         run: |
           kubectl apply -f k8s-deployment.yaml
-          kubectl rollout status deployment/spring-test-deployment -n spring --timeout=5m
+          kubectl rollout status deployment/spring-test-app --timeout=5m
 
       # ========================================
       # 5. VERIFY DEPLOYMENT
@@ -190,6 +186,6 @@ jobs:
       - name: Verify Deployment
         run: |
           echo "Checking deployment status..."
-          kubectl get deployment -n spring
-          kubectl get pods -n spring
-          kubectl get svc -n spring
+          kubectl get deployment
+          kubectl get pods
+          kubectl get svc
