@@ -115,21 +115,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # ========================================
-      # 4. EXTRACT METADATA
-      # ========================================
-      - name: Extract Metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha
-
-      # ========================================
-      # 5. BUILD AND PUSH IMAGE
+      # 4. BUILD AND PUSH IMAGE
       # ========================================
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
@@ -137,8 +123,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ghcr.io/wisamaltaqaly/docker-hello-world-spring-boot:latest
+            ghcr.io/wisamaltaqaly/docker-hello-world-spring-boot:${{ github.sha }}
 
   deploy-to-kubernetes:
     runs-on: ubuntu-latest
