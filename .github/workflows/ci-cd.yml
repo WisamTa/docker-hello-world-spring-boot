@@ -164,12 +164,19 @@ jobs:
             --project curamet-onboarding
 
       # ========================================
-      # 4.5 DEPLOY TO KUBERNETES
+      # 4.5 REMOVE BROKEN VPA WEBHOOK
+      # ========================================
+      - name: Remove Broken VPA Webhook
+        run: |
+          kubectl delete mutatingwebhookconfigurations gke-vpa-webhook-config --ignore-not-found=true
+
+      # ========================================
+      # 4.6 DEPLOY TO KUBERNETES
       # ========================================
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s-deployment.yaml --validate=false
-          kubectl rollout status deployment/spring-test-app --timeout=5m || true      # ========================================
+          kubectl apply -f k8s-deployment.yaml
+          kubectl rollout status deployment/spring-test-app --timeout=5m      # ========================================
       # 6. VERIFY DEPLOYMENT
       # ========================================
       - name: Verify Deployment
