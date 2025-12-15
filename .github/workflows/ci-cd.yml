@@ -3,11 +3,6 @@ name: Spring Boot CI/CD Pipeline
 on:
   push:
     branches: [ "main", "develop", "master", "test/**" ]
-    paths:
-      - 'src/**'
-      - 'pom.xml'
-      - 'Dockerfile'
-      - '.github/workflows/ci-cd.yml'
   pull_request:
     branches: [ "main", "master" ]
 
