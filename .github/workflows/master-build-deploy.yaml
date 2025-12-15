@@ -1,9 +1,8 @@
-name: CI/CD Build/Deploy Pipeline
+name: CI/CD Build/Deploy Pipeline (DISABLED)
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:  # Only manual trigger, not automatic
+
 
 jobs:
   MASTER-BUILD-DEPLOY:
@@ -62,16 +61,16 @@ jobs:
       run: |
         helm upgrade --install demo-release ./spring-boot-helloworld-chart --set image.tag=${{ steps.vars.outputs.sha_short }} -f ./spring-boot-helloworld-chart/values.yaml --namespace test --atomic --wait
 
-    - name: Send Slack notification
-      if: always()
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL_NAME }}
-        SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
-        SLACK_ICON: ':grimacing:'
-        SLACK_MESSAGE: "Deployment Tag:${{ steps.vars.outputs.sha_short }} to CURAMET DigitalOcean Test Cluster is complete."
-        SLACK_TITLE: "Master build & Deploy"
-        SLACK_USERNAME: "Github Actions"
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        MSG_MINIMAL: "actions,url,commit"
-        SLACK_FOOTER: "CURAMET | CI/CD"
+    # - name: Send Slack notification (Disabled - configure SLACK_WEBHOOK secret if needed)
+    #   if: always()
+    #   uses: rtCamp/action-slack-notify@v2
+    #   env:
+    #     SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL_NAME }}
+    #     SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
+    #     SLACK_ICON: ':grimacing:'
+    #     SLACK_MESSAGE: "Deployment Tag:${{ steps.vars.outputs.sha_short }} to CURAMET DigitalOcean Test Cluster is complete."
+    #     SLACK_TITLE: "Master build & Deploy"
+    #     SLACK_USERNAME: "Github Actions"
+    #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    #     MSG_MINIMAL: "actions,url,commit"
+    #     SLACK_FOOTER: "CURAMET | CI/CD"

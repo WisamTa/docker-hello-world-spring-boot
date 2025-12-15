@@ -1,9 +1,8 @@
-name: CI/CD Branch Verify Pipeline
+name: CI/CD Branch Verify Pipeline (DISABLED)
 
 on:
-  push:
-    branches-ignore:
-      - master
+  workflow_dispatch:  # Only manual trigger, not automatic
+
 jobs:
   BRANCH-VERIFY:
     runs-on: ubuntu-latest

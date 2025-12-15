@@ -1,11 +1,8 @@
-name: CI/CD Verify Pipeline
+name: CI/CD Verify Pipeline (DISABLED)
 
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+  workflow_dispatch:  # Only manual trigger, not automatic
+
 
 jobs:
   PR-VERIFY:
@@ -57,16 +54,16 @@ jobs:
         image: registry.digitalocean.com/curamet/spring-boot-api-demo:${{ steps.vars.outputs.sha_short }}
         fail-build: false
 
-    - name: Send Slack notification
-      if: always()
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL_NAME }}
-        SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
-        SLACK_ICON: ':grimacing:'
-        SLACK_MESSAGE: "PR changes verification completed."
-        SLACK_TITLE: "PR Verify"
-        SLACK_USERNAME: "Github Actions"
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        MSG_MINIMAL: "actions,url,commit"
-        SLACK_FOOTER: "CURAMET | CI/CD"
+    # - name: Send Slack notification (Disabled - configure SLACK_WEBHOOK secret if needed)
+    #   if: always()
+    #   uses: rtCamp/action-slack-notify@v2
+    #   env:
+    #     SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL_NAME }}
+    #     SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
+    #     SLACK_ICON: ':grimacing:'
+    #     SLACK_MESSAGE: "PR changes verification completed."
+    #     SLACK_TITLE: "PR Verify"
+    #     SLACK_USERNAME: "Github Actions"
+    #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    #     MSG_MINIMAL: "actions,url,commit"
+    #     SLACK_FOOTER: "CURAMET | CI/CD"
