@@ -162,16 +162,16 @@ jobs:
           gcloud container clusters get-credentials autopilot-cluster-1 \
             --region europe-north1 \
             --project curamet-onboarding
+          
+          # Remove the exec plugin from kubeconfig to use basic auth instead
+          sed -i 's/exec:/disabled_exec:/g' $HOME/.kube/config
 
       # ========================================
       # 4.5 DEPLOY TO KUBERNETES
       # ========================================
       - name: Deploy to Kubernetes
         run: |
-          # Use application default credentials
-          export GOOGLE_APPLICATION_CREDENTIALS=$(mktemp)
-          echo "${{ secrets.GCP_SA_KEY }}" > $GOOGLE_APPLICATION_CREDENTIALS
-          kubectl apply -f k8s-deployment.yaml --validate=false
+          kubectl apply -f k8s-deployment.yaml
           kubectl rollout status deployment/spring-test-app --timeout=5m      # ========================================
       # 6. VERIFY DEPLOYMENT
       # ========================================
