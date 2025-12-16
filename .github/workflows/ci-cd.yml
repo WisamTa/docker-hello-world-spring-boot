@@ -155,6 +155,15 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       # ========================================
+      # 3.5 INSTALL GKE AUTH PLUGIN
+      # ========================================
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin --quiet
+          # Add to PATH explicitly
+          echo "$(gcloud info --format='value(installation.sdk_root)')/bin" >> $GITHUB_PATH
+
+      # ========================================
       # 4. GET GKE CREDENTIALS
       # ========================================
       - name: Get GKE Credentials
@@ -162,6 +171,8 @@ jobs:
           gcloud container clusters get-credentials autopilot-cluster-1 \
             --region europe-north1 \
             --project curamet-onboarding
+          # Verify plugin is in PATH
+          which gke-gcloud-auth-plugin
 
       # ========================================
       # 4.5 REMOVE BROKEN VPA WEBHOOK
