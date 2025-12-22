@@ -124,6 +124,14 @@ jobs:
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
       # ========================================
+      # 3.5 INSTALL GKE AUTH PLUGIN
+      # ========================================
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin --quiet
+          echo "$(gcloud info --format='value(installation.sdk_root)')/bin" >> $GITHUB_PATH
+
+      # ========================================
       # 4. GET GKE CREDENTIALS
       # ========================================
       - name: Get GKE Credentials
