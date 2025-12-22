@@ -2,18 +2,17 @@ name: Helm Deploy to GKE
 
 on:
   push:
-    branches: [ "main", "develop", "master" ]
+    branches: [ "test/workflow-trigger" ]
     paths-ignore:
       - "**.md"
       - "Notes.md"
       - "*.txt"
   pull_request:
-    branches: [ "main", "master" ]
+    branches: []
     paths-ignore:
       - "**.md"
       - "Notes.md"
       - "*.txt"
-  workflow_dispatch:
 
 env:
   REGISTRY: europe-docker.pkg.dev
