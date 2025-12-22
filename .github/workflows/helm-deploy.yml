@@ -218,7 +218,6 @@ jobs:
   helm-rollback:
     runs-on: ubuntu-latest
     name: Helm Rollback (Manual)
-    if: github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout Code
