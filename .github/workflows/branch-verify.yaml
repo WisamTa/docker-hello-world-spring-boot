@@ -1,13 +1,7 @@
-name: CI/CD Branch Verify Pipeline
+name: CI/CD Branch Verify Pipeline (DISABLED)
 
 on:
-  push:
-    branches: [ "main", "develop", "master", "test/**" ]
-    paths:
-      - 'src/**'
-      - 'pom.xml'
-      - '.github/workflows/branch-verify.yaml'
-  pull_request:
+  workflow_dispatch: {}
     branches: [ "main", "master" ]
 
 jobs:

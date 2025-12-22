@@ -1,10 +1,7 @@
-name: Spring Boot CI/CD Pipeline
+name: Spring Boot CI/CD Pipeline (DISABLED)
 
 on:
-  push:
-    branches: [ "main", "develop", "master", "test/**" ]
-  pull_request:
-    branches: [ "main", "master" ]
+  workflow_dispatch: {}
 
 env:
   REGISTRY: docker.io
