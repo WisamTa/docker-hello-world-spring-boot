@@ -35,9 +35,7 @@ serviceAccount:
 podAnnotations: {}
 # This is for setting Kubernetes Labels to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-podLabels:
-  app: spring-hello
-  tier: backend
+podLabels: {}
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -164,8 +162,7 @@ volumeMounts: []
   #   mountPath: "/etc/foo"
   #   readOnly: true
 
-nodeSelector:
-  kubernetes.io/hostname: gk3-autopilot-cluster-1-pool-1-009d4e74-74h5
+nodeSelector: {}
 
 tolerations: []
 
