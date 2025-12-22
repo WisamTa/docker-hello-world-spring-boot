@@ -3,8 +3,16 @@ name: Helm Deploy to GKE
 on:
   push:
     branches: [ "main", "develop", "master" ]
+    paths-ignore:
+      - "**.md"
+      - "Notes.md"
+      - "*.txt"
   pull_request:
     branches: [ "main", "master" ]
+    paths-ignore:
+      - "**.md"
+      - "Notes.md"
+      - "*.txt"
   workflow_dispatch:
 
 env:
