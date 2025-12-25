@@ -217,6 +217,7 @@ jobs:
   helm-rollback:
     runs-on: ubuntu-latest
     name: Helm Rollback (Manual)
+    if: false  # DISABLED
 
     steps:
       - name: Checkout Code
@@ -240,12 +241,3 @@ jobs:
           gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} \
             --region ${{ env.GKE_REGION }} \
             --project ${{ env.GCP_PROJECT }}
-
-      - name: Helm Rollback to Previous Release
-        run: |
-          helm rollback ${{ env.HELM_RELEASE_NAME }} \
-            --namespace ${{ env.HELM_NAMESPACE }}
-
-      - name: Verify Rollback
-        run: |
-          helm status ${{ env.HELM_RELEASE_NAME }} -n ${{ env.HELM_NAMESPACE }}
