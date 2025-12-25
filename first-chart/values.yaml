@@ -162,8 +162,21 @@ volumeMounts: []
   #   mountPath: "/etc/foo"
   #   readOnly: true
 
-nodeSelector: {}
+nodeSelector: 
+  kubernetes.io/os: linux
+
 
 tolerations: []
 
-affinity: {}
+affinity: 
+podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - spring-hello
+          topologyKey: topology.kubernetes.io/zone
