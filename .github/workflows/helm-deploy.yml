@@ -2,7 +2,7 @@ name: Helm Deploy to GKE
 
 on:
   push:
-    branches: [ "test/workflow-trigger" ]
+    branches: [ "master" ]
     paths-ignore:
       - "**.md"
       - "Notes.md"
