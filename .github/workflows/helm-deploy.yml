@@ -213,31 +213,3 @@ jobs:
         if: always()
         run: |
           helm history ${{ env.HELM_RELEASE_NAME }} -n ${{ env.HELM_NAMESPACE }}
-
-  helm-rollback:
-    runs-on: ubuntu-latest
-    name: Helm Rollback (Manual)
-    if: false  # DISABLED
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
-          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Install Helm
-        run: |
-          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-      - name: Get GKE Credentials
-        run: |
-          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} \
-            --region ${{ env.GKE_REGION }} \
-            --project ${{ env.GCP_PROJECT }}
