@@ -39,6 +39,7 @@ podLabels:
   app: spring-hello
   serve: enabled
   workload: batch
+  type: app
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -60,7 +61,7 @@ service:
   targetPort: 8080
   # Service selector to route traffic to specific pods
   selector:
-    serve: enabled
+    type: app
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
