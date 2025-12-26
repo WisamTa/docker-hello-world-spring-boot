@@ -4,6 +4,10 @@ metadata:
   name: {{ include "first-chart.fullname" . }}
   labels:
     {{- include "first-chart.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +16,8 @@ spec:
       protocol: TCP
       name: http
   selector:
+    {{- if .Values.service.selector }}
+    {{- toYaml .Values.service.selector | nindent 4 }}
+    {{- else }}
     {{- include "first-chart.selectorLabels" . | nindent 4 }}
+    {{- end }}

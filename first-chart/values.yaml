@@ -25,14 +25,27 @@ serviceAccount:
   # Automatically mount a ServiceAccount's API credentials?
   automount: true
   # Annotations to add to the service account.
-  annotations: {}
+  annotations:
+    description: "Service account for Spring Hello World application"
+    team: "backend"
+    environment: "production"
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template.
   name: ""
 
 # This is for setting Kubernetes Annotations to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-podAnnotations: {}
+podAnnotations:
+  app.version: "1.0"
+  managed-by: "helm"
+  environment: "production"
+
+# Deployment Annotations
+deploymentAnnotations:
+  description: "Spring Hello World Helm Deployment"
+  deployment-type: "stateless"
+  monitoring: "enabled"
+
 # This is for setting Kubernetes Labels to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels:
@@ -64,6 +77,11 @@ service:
   # Service selector to route traffic to specific pods
   selector:
     serve: enabled
+  # Service Annotations
+  annotations:
+    service.type: "internal"
+    monitoring: "enabled"
+    description: "Spring Hello World Service"
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:

@@ -180,8 +180,7 @@ jobs:
           helm upgrade ${{ env.HELM_RELEASE_NAME }} ${{ env.HELM_CHART_PATH }} \
             --namespace ${{ env.HELM_NAMESPACE }} \
             --install \
-            --wait \
-            --timeout 5m
+            --wait=false
 
       # ========================================
       # 9. VERIFY DEPLOYMENT

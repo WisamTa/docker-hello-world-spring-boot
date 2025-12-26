@@ -2,7 +2,6 @@ name: CI/CD Branch Verify Pipeline (DISABLED)
 
 on:
   workflow_dispatch: {}
-    branches: [ "main", "master" ]
 
 jobs:
   BRANCH-VERIFY:
