@@ -1,18 +1,7 @@
-name: Helm Deploy to GKE
+name: Helm Deploy to GKE (DISABLED - Using Jenkins)
 
 on:
-  push:
-    branches: [ "master" ]
-    paths-ignore:
-      - "**.md"
-      - "Notes.md"
-      - "*.txt"
-  pull_request:
-    branches: []
-    paths-ignore:
-      - "**.md"
-      - "Notes.md"
-      - "*.txt"
+  workflow_dispatch: {}
 
 env:
   REGISTRY: europe-docker.pkg.dev

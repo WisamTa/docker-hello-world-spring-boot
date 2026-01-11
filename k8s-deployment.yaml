@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: spring-test-app 
-          image: docker.io/wisam123/spring-boot-hello:latest
+          image: europe-docker.pkg.dev/curamet-onboarding/spring-boot/spring-boot-hello:spring
           imagePullPolicy: Always
           ports:
             - containerPort: 8080 # The port that the container is running on in the cluster
