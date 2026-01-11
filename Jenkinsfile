@@ -63,22 +63,20 @@ pipeline {
         stage('Authenticate GCP & Push Image') {
             steps {
                 script {
-                    echo "========== Authenticating to GCP =========="
-                    withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GCP_KEY_FILE')]) {
-                        sh '''
-                            # Authenticate with GCP
-                            gcloud auth activate-service-account --key-file=${GCP_KEY_FILE}
-                            gcloud config set project ${GCP_PROJECT}
-                            
-                            # Configure Docker for Artifact Registry
-                            gcloud auth configure-docker ${REGISTRY} --quiet
-                            
-                            # Push image to Artifact Registry
-                            echo "========== Pushing Docker Image to Artifact Registry =========="
-                            docker push ${IMAGE_URL}
-                            echo "Image pushed: ${IMAGE_URL}"
-                        '''
-                    }
+                    echo "========== Authenticating to GCP with WIF =========="
+                    // WIF authentication - no static credentials needed
+                    sh '''
+                        # Use default application credentials (WIF)
+                        gcloud config set project ${GCP_PROJECT}
+                        
+                        # Configure Docker for Artifact Registry (uses Application Default Credentials)
+                        gcloud auth configure-docker ${REGISTRY} --quiet
+                        
+                        # Push image to Artifact Registry
+                        echo "========== Pushing Docker Image to Artifact Registry =========="
+                        docker push ${IMAGE_URL}
+                        echo "Image pushed: ${IMAGE_URL}"
+                    '''
                 }
             }
         }
@@ -86,16 +84,14 @@ pipeline {
         stage('Get GKE Credentials') {
             steps {
                 script {
-                    echo "========== Getting GKE Cluster Credentials =========="
-                    withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GCP_KEY_FILE')]) {
-                        sh '''
-                            gcloud auth activate-service-account --key-file=${GCP_KEY_FILE}
-                            gcloud config set project ${GCP_PROJECT}
-                            gcloud container clusters get-credentials ${GKE_CLUSTER} \
-                                --region ${GKE_REGION} \
-                                --project ${GCP_PROJECT}
-                        '''
-                    }
+                    echo "========== Getting GKE Cluster Credentials (WIF) =========="
+                    // WIF authentication - uses Application Default Credentials
+                    sh '''
+                        gcloud config set project ${GCP_PROJECT}
+                        gcloud container clusters get-credentials ${GKE_CLUSTER} \
+                            --region ${GKE_REGION} \
+                            --project ${GCP_PROJECT}
+                    '''
                 }
             }
         }
